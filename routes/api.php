@@ -14,13 +14,13 @@ Route::group(['prefix' => 'categories'], function () {
     // list all categories
     Route::get('/',[CategoryController::class, 'index']);
     // show category
-    Route::get('/show/{id}', [CategoryController::class, 'show']);
+    Route::get('/{id}', [CategoryController::class, 'show']);
     // store category
-    Route::post('/store', [CategoryController::class, 'store']);
+    Route::post('/', [CategoryController::class, 'store']);
     // update category
-    Route::put('/update/{id}', [CategoryController::class, 'update']);
+    Route::put('/{id}', [CategoryController::class, 'update']);
     // delete category
-    Route::delete('/delete/{id}', [CategoryController::class, 'destroy']);
+    Route::delete('/{id}', [CategoryController::class, 'destroy']);
 
 });
 
