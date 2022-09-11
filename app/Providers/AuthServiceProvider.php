@@ -15,7 +15,7 @@ class AuthServiceProvider extends ServiceProvider
      */
     protected $policies = [
         // descomment this list
-         'App\Models\Model' => 'App\Policies\ModelPolicy',
+        //  'App\Models\Model' => 'App\Policies\ModelPolicy',
     ];
 
     /**
@@ -30,7 +30,7 @@ class AuthServiceProvider extends ServiceProvider
         $expireToken =  env('TOKEN_EXPIRE_IN',"1");
         $expireToken = intval($expireToken);
         // passort routes
-        Passport::routes();
+        // Passport::routes();
         Passport::personalAccessTokensExpireIn(now()->addDay($expireToken));
     }
 }
