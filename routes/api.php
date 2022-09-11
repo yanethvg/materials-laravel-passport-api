@@ -7,15 +7,16 @@ use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\AuthController;
 
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
-});
+// Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
+//     return $request->user();
+// });
 
 // laravel passport
 Route::post('/register', [AuthController::class, 'register']);
+Route::post('/login', [AuthController::class, 'login']);
+Route::post('/logout', [AuthController::class, 'logout'])->middleware('auth:api');
 
-
-Route::group(['prefix' => 'categories'], function () {
+Route::group(['prefix' => 'categories', 'middleware' => 'auth:api'], function () {
     // list all categories
     Route::get('/',[CategoryController::class, 'index']);
     // show category
