@@ -14,4 +14,9 @@ class Category extends Model
     protected $guarded = ['id'];
 
     protected $fillable = ['name', 'description'];
+
+    public function materials()
+    {
+        return $this->hasMany(Material::class, 'category_id', 'id');
+    }
 }

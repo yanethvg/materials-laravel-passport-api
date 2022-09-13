@@ -14,4 +14,13 @@ class Material extends Model
     protected $guarded = ['id'];
 
     protected $fillable = ['name', 'description','stock_minim','is_active','unit_measure_id','category_id'];
+
+    public function category()
+    {
+        return $this->belongsTo(Category::class,'category_id', 'id');
+    }
+    public function measure()
+    {
+        return $this->belongsTo(UnitMeasure::class,'unit_measure_id', 'id');
+    }
 }

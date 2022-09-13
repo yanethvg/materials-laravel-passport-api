@@ -14,4 +14,9 @@ class UnitMeasure extends Model
     protected $guarded = ['id'];
 
     protected $fillable = ['name', 'description','abbreviate'];
+
+    public function materials()
+    {
+        return $this->hasMany(Material::class, 'unit_measure_id', 'id');
+    }
 }
