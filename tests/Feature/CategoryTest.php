@@ -112,7 +112,7 @@ class CategoryTest extends TestCase
         $this->assertEquals($category->description,"Testing Update");
 
     }
-     public function test_wrong_update_category()
+     public function test_id_wrong_update_category()
     {
         $category_id = 9999;
 
@@ -136,6 +136,13 @@ class CategoryTest extends TestCase
 
         $response->assertStatus(200);
 
+        $response->assertJsonStructure(['data' => [
+            'id',
+            'name',
+            'description',
+            'created_at',
+            'created_at'
+        ]]);
     }
     public function test_wrong_show_category()
     {

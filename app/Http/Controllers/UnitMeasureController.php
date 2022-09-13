@@ -4,82 +4,40 @@ namespace App\Http\Controllers;
 
 use App\Models\UnitMeasure;
 use Illuminate\Http\Request;
+use App\Http\Resources\UnitMeasureResource;
+use App\Http\Requests\CreateUnitMeasureRequest;
+use App\Http\Requests\UpdateUnitMeasureRequest;
 
 class UnitMeasureController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function index()
     {
-        //
+        return UnitMeasureResource::collection(UnitMeasure::all());
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
+    
+    public function store(CreateUnitMeasureRequest $request)
     {
-        //
+        $measure = UnitMeasure::create($request->all());
+        return new UnitMeasureResource($measure);
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
+    public function show($id)
     {
-        //
+        return new UnitMeasureResource(UnitMeasure::findOrFail($id));
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\UnitMeasure  $unitMeasure
-     * @return \Illuminate\Http\Response
-     */
-    public function show(UnitMeasure $unitMeasure)
+    
+    public function update(UpdateUnitMeasureRequest $request, $id)
     {
-        //
+        $measure = UnitMeasure::findOrFail($id)->update($request->all());
+        return new UnitMeasureResource(UnitMeasure::findOrFail($id));
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\UnitMeasure  $unitMeasure
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(UnitMeasure $unitMeasure)
+    public function destroy($id)
     {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\UnitMeasure  $unitMeasure
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, UnitMeasure $unitMeasure)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Models\UnitMeasure  $unitMeasure
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy(UnitMeasure $unitMeasure)
-    {
-        //
+        $measure = UnitMeasure::findOrFail($id);
+        $measure->delete();
+        return new UnitMeasureResource($measure);
     }
 }
