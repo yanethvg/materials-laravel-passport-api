@@ -4,7 +4,9 @@ namespace Tests\Feature;
 
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
+use Illuminate\Support\Facades\Hash;
 use Tests\TestCase;
+use App\Models\User;
 use App\Models\Category;
 
 class CategoryTest extends TestCase
@@ -14,12 +16,37 @@ class CategoryTest extends TestCase
     // using faker
     use WithFaker;
 
+    protected $token;
+
+    public function setUp(): void
+    {
+        parent::setUp();
+        $this->token = $this->authenticate();
+    }
+
+    protected function authenticate(){
+        \Artisan::call('passport:install');
+
+        $user =  User::create([
+            'name'=> 'test',
+            'email' => 'test@test.com',
+            'password' => Hash::make('testtest'),
+        ]);
+
+        //creating access token
+        $token = $user->createToken('authToken')->accessToken;
+        return $token;
+    }
+
     public function test_list_categories()
     {
         $this->withoutExceptionHandling();
+
         $categoriesTest =  Category::factory()->count(10)->create(); // test
 
-        $response =  $this->json('get', '/api/categories');
+        $response = $this->withHeaders([
+            'Authorization' => 'Bearer '. $this->token,
+            ])->json('get', '/api/categories', ['Accept' => 'application/json']);
 
         $response->assertStatus(200);
 
@@ -37,7 +64,9 @@ class CategoryTest extends TestCase
             "description" => $this->faker->text($maxNbChars = 50)
         ];
 
-        $response =  $this->json('post', '/api/categories', $categoryTest);
+        $response =  $this->withHeaders([
+            'Authorization' => 'Bearer '. $this->token,
+            ])->json('post', '/api/categories', $categoryTest);
 
 
         $response->assertStatus(201);
@@ -54,7 +83,9 @@ class CategoryTest extends TestCase
         
         $categoryTest = [];
 
-        $response = $this->json('post', '/api/categories', $categoryTest);
+        $response = $this->withHeaders([
+            'Authorization' => 'Bearer '. $this->token,
+            ])->json('post', '/api/categories', $categoryTest);
 
         $response->assertUnprocessable();
 
@@ -68,7 +99,9 @@ class CategoryTest extends TestCase
 
         $categoryTest =  Category::factory()->count(1)->create();
 
-        $response =  $this->json('put', '/api/categories/'.$categoryTest[0]->id,  [
+        $response =  $this->withHeaders([
+            'Authorization' => 'Bearer '. $this->token,
+            ])->json('put', '/api/categories/'.$categoryTest[0]->id,  [
             "description" =>"Testing Update"
         ]);
 
@@ -83,7 +116,9 @@ class CategoryTest extends TestCase
     {
         $category_id = 9999;
 
-        $response =  $this->json('put', '/api/categories/'.$category_id);
+        $response =  $this->withHeaders([
+            'Authorization' => 'Bearer '. $this->token,
+            ])->json('put', '/api/categories/'.$category_id);
 
         $response->assertNotFound();
 
@@ -95,7 +130,9 @@ class CategoryTest extends TestCase
         
         $categoryTest =  Category::factory()->count(1)->create();
 
-        $response =  $this->json('get', '/api/categories/'.$categoryTest[0]->id);
+        $response =  $this->withHeaders([
+            'Authorization' => 'Bearer '. $this->token,
+            ])->json('get', '/api/categories/'.$categoryTest[0]->id);
 
         $response->assertStatus(200);
 
@@ -104,7 +141,9 @@ class CategoryTest extends TestCase
     {
         $category_id = 9999;
 
-        $response =  $this->json('get', '/api/categories/'.$category_id);
+        $response =  $this->withHeaders([
+            'Authorization' => 'Bearer '. $this->token,
+            ])->json('get', '/api/categories/'.$category_id);
 
         $response->assertNotFound();
 
@@ -117,7 +156,9 @@ class CategoryTest extends TestCase
 
         $categoryTest =  Category::factory()->count(1)->create();
 
-        $response =  $this->json('delete', '/api/categories/'.$categoryTest[0]->id);
+        $response =  $this->withHeaders([
+            'Authorization' => 'Bearer '. $this->token,
+            ])->json('delete', '/api/categories/'.$categoryTest[0]->id);
 
         $response->assertStatus(200);
 
@@ -126,7 +167,9 @@ class CategoryTest extends TestCase
     {
         $category_id = 9999;
 
-        $response =  $this->json('delete', '/api/categories/'.$category_id);
+        $response =  $this->withHeaders([
+            'Authorization' => 'Bearer '. $this->token,
+            ])->json('delete', '/api/categories/'.$category_id);
 
         $response->assertNotFound();
 
