@@ -4,6 +4,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
 use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\MaterialController;
 use App\Http\Controllers\UnitMeasureController;
 use App\Http\Controllers\AuthController;
 
@@ -43,5 +44,19 @@ Route::group(['prefix' => 'unitmeasures', 'middleware' => 'auth:api'], function 
     // delete measure
     Route::delete('/{id}', [UnitMeasureController::class, 'destroy']);
 });
+
+Route::group(['prefix' => 'materials', 'middleware' => 'auth:api'], function () {
+    // list all materials
+    Route::get('/',[MaterialController::class, 'index']);
+    // show material
+    Route::get('/{id}', [MaterialController::class, 'show']);
+    // store material
+    Route::post('/', [MaterialController::class, 'store']);
+    // update material
+    Route::put('/{id}', [MaterialController::class, 'update']);
+    // delete mmaterial
+    Route::delete('/{id}', [MaterialController::class, 'destroy']);
+});
+
 
 
