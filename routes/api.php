@@ -19,7 +19,7 @@ Route::post('/login', [AuthController::class, 'login']);
 Route::post('/logout', [AuthController::class, 'logout'])->middleware('auth:api');
 
 
-Route::group(['prefix' => 'categories', 'middleware' => 'auth:api'], function () {
+Route::group(['prefix' => 'categories', 'middleware' => ['auth:api','role:boss']], function () {
     // list all categories
     Route::get('/',[CategoryController::class, 'index']);
     // show category
@@ -32,7 +32,7 @@ Route::group(['prefix' => 'categories', 'middleware' => 'auth:api'], function ()
     Route::delete('/{id}', [CategoryController::class, 'destroy']);
 });
 
-Route::group(['prefix' => 'unitmeasures', 'middleware' => 'auth:api'], function () {
+Route::group(['prefix' => 'unitmeasures', 'middleware' => ['auth:api','role:boss']], function () {
     // list all measures
     Route::get('/',[UnitMeasureController::class, 'index']);
     // show measure
@@ -45,7 +45,7 @@ Route::group(['prefix' => 'unitmeasures', 'middleware' => 'auth:api'], function 
     Route::delete('/{id}', [UnitMeasureController::class, 'destroy']);
 });
 
-Route::group(['prefix' => 'materials', 'middleware' => 'auth:api'], function () {
+Route::group(['prefix' => 'materials', 'middleware' => ['auth:api','role:boss|seller']], function () {
     // list all materials
     Route::get('/',[MaterialController::class, 'index']);
     // show material

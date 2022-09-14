@@ -6,6 +6,9 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Support\Facades\Hash;
 use Tests\TestCase;
+//models
+use Spatie\Permission\Models\Permission;
+use Spatie\Permission\Models\Role;
 use App\Models\User;
 use App\Models\Material;
 use App\Models\UnitMeasure;
@@ -33,11 +36,18 @@ class MaterialTest extends TestCase
      protected function authenticate(){
         \Artisan::call('passport:install');
  
+        //creating permission
+        Permission::create(['name' => 'categories']);
+        //creating role
+        $role = Role::create(['name' => 'boss']);
+        $role->givePermissionTo('categories');
         $user =  User::create([
-             'name'=> 'test',
-             'email' => 'test@test.com',
-             'password' => Hash::make('testtest'),
+            'name'=> 'test',
+            'email' => 'test@test.com',
+            'password' => Hash::make('testtest'),
         ]);
+
+        $user->assignRole($role);
  
         //creating access token
         $token = $user->createToken('authToken')->accessToken;
