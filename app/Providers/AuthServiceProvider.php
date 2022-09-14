@@ -32,5 +32,10 @@ class AuthServiceProvider extends ServiceProvider
         // passort routes
         // Passport::routes();
         Passport::personalAccessTokensExpireIn(now()->addDay($expireToken));
+
+        // Spatie
+        Gate::before(function ($user, $ability) {
+            return $user->hasRole('super-admin') ? true : null;
+        });
     }
 }
