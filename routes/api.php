@@ -22,6 +22,8 @@ Route::post('/logout', [AuthController::class, 'logout'])->middleware('auth:api'
 Route::group(['prefix' => 'categories', 'middleware' => ['auth:api','role:boss']], function () {
     // list all categories
     Route::get('/',[CategoryController::class, 'index']);
+    // paginate categories
+    Route::get('/paginate',[CategoryController::class, 'paginate']);
     // show category
     Route::get('/{id}', [CategoryController::class, 'show']);
     // store category
