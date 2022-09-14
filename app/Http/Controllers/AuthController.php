@@ -21,7 +21,6 @@ class AuthController extends Controller
         ];
         $validatedData['password'] = Hash::make($request->password);
         $user = User::create($validatedData);
-
         //creating access token
         $accessToken = $user->createToken('authToken')->accessToken;
         
@@ -39,12 +38,14 @@ class AuthController extends Controller
         }
 
         $user = request()->user();
+        $rol = $user->roles->pluck('name')->all();
 
         $accessToken = auth()->user()->createToken('authToken')->accessToken;
 
         return response([
             'user' => new AuthResource($user),
             'access_token' => $accessToken,
+            'role' => $rol[0],
             'token_type' => 'Bearer'
         ]);
     }

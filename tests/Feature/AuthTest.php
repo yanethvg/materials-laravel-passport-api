@@ -6,8 +6,11 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Support\Facades\Hash;
 use Laravel\Passport\Passport;
-use App\Models\User;
 use Tests\TestCase;
+//models
+use Spatie\Permission\Models\Permission;
+use Spatie\Permission\Models\Role;
+use App\Models\User;
 
 class AuthTest extends TestCase
 {
@@ -82,11 +85,19 @@ class AuthTest extends TestCase
         // $this->withoutExceptionHandling();
         \Artisan::call('passport:install');
 
-        $user = User::create([
+        //creating permission
+        Permission::create(['name' => 'categories']);
+        //creating role
+        $role = Role::create(['name' => 'boss']);
+        $role->givePermissionTo('categories');
+        $user =  User::create([
             'name'=> 'test',
             'email' => 'test@test.com',
-            'password' => Hash::make('testtest')
+            'password' => Hash::make('testtest'),
         ]);
+
+        $user->assignRole($role);
+        $rol = $user->roles->pluck('name')->all();
         
         
         $body = [
@@ -102,7 +113,7 @@ class AuthTest extends TestCase
             'email',
             'created_at',
             'updated_at'
-        ], 'access_token', 'token_type']);
+        ], 'access_token', 'role', 'token_type']);
     }
     public function test_wrong_api_login() {
         \Artisan::call('passport:install');
