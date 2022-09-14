@@ -18,6 +18,9 @@ class DatabaseSeeder extends Seeder
         $this->call(UnitMeasureSeeder::class);
         $this->call(MaterialSeeder::class);
         $this->call(PermissionSeeder::class);
-        $this->call(RoleSeeder::class);
+        $this->call(SuperAdminSeeder::class);
+        $this->call(UserSeeder::class);
+        \Artisan::call('passport:install');
+        // $this->call(RoleSeeder::class);
     }
 }
