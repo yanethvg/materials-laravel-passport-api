@@ -19,4 +19,10 @@ class Category extends Model
     {
         return $this->hasMany(Material::class, 'category_id', 'id');
     }
+
+    public function scopeFilter($query, $q)
+    {
+        if ($q)
+            $query->where('name', 'ILIKE', "%$q%")->orWhere('description', 'ILIKE', "%$q%");
+    }
 }

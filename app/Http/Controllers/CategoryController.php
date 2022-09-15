@@ -16,11 +16,12 @@ class CategoryController extends Controller
         return CategoryResource::collection(Category::all());
     }
 
-    public function paginate()
+    public function paginate(Request $request)
     {
-        $categories = Category::withCount('materials')->paginate(
+        $categories = Category::withCount('materials')->filter($request->search)->paginate(
             $perPage = 6, $columns = ['*']
         );
+        // dd($categories);
         return CategoryResource::collection($categories);
     }
 
