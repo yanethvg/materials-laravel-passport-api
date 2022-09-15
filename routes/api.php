@@ -37,6 +37,8 @@ Route::group(['prefix' => 'categories', 'middleware' => ['auth:api','role:boss']
 Route::group(['prefix' => 'unitmeasures', 'middleware' => ['auth:api','role:boss']], function () {
     // list all measures
     Route::get('/',[UnitMeasureController::class, 'index']);
+    // paginate measure
+    Route::get('/paginate',[UnitMeasureController::class, 'paginate']);
     // show measure
     Route::get('/{id}', [UnitMeasureController::class, 'show']);
     // store measure

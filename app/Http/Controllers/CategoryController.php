@@ -18,10 +18,9 @@ class CategoryController extends Controller
 
     public function paginate(Request $request)
     {
-        $categories = Category::withCount('materials')->filter($request->search)->paginate(
+        $categories = Category::withCount('materials')->orderBy('updated_at', 'desc')->filter($request->search)->paginate(
             $perPage = 6, $columns = ['*']
         );
-        // dd($categories);
         return CategoryResource::collection($categories);
     }
 

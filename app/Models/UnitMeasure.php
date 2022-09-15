@@ -19,4 +19,9 @@ class UnitMeasure extends Model
     {
         return $this->hasMany(Material::class, 'unit_measure_id', 'id');
     }
+    public function scopeFilter($query, $q)
+    {
+        if ($q)
+            $query->where('name', 'ILIKE', "%$q%")->orWhere('abbreviate', 'ILIKE', "%$q%");
+    }
 }

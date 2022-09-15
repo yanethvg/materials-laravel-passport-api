@@ -15,6 +15,14 @@ class UnitMeasureController extends Controller
         return UnitMeasureResource::collection(UnitMeasure::all());
     }
 
+    public function paginate(Request $request)
+    {
+        $measures = UnitMeasure::withCount('materials')->orderBy('updated_at', 'desc')->filter($request->search)->paginate(
+            $perPage = 6, $columns = ['*']
+        );
+        return UnitMeasureResource::collection($measures);
+    }
+
     
     public function store(CreateUnitMeasureRequest $request)
     {
