@@ -10,11 +10,15 @@ use App\Http\Requests\UpdateMaterialRequest;
 
 class MaterialController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $materials = Material::with('measure','category')->paginate(
-            $perPage = 6, $columns = ['*']
-        );
+        $materials = Material::with('measure','category')
+            ->category($request->category)
+            ->measure($request->measure)
+            ->filter($request->search)
+            ->paginate(
+                $perPage = 6, $columns = ['*']
+            );
         return MaterialResource::collection($materials);
     }
 

@@ -23,4 +23,23 @@ class Material extends Model
     {
         return $this->belongsTo(UnitMeasure::class,'unit_measure_id', 'id');
     }
+    public function scopeCategory($query, $category)
+    {
+        if ($category)
+            return $query->whereHas('category', function ($query) use ($category) {
+                $query->where('name', 'ilike', "%$category%");
+            });
+    }
+    public function scopeMeasure($query, $measure)
+    {
+        if ($measure)
+            return $query->whereHas('measure', function ($query) use ($measure) {
+                $query->where('name', 'ilike', "%$measure%");
+            });
+    }
+    public function scopeFilter($query, $q)
+    {
+        if ($q)
+            $query->where('name', 'ILIKE', "%$q%")->orWhere('description', 'ILIKE', "%$q%");
+    }
 }
