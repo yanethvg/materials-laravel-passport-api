@@ -19,7 +19,7 @@ Route::post('/login', [AuthController::class, 'login']);
 Route::post('/logout', [AuthController::class, 'logout'])->middleware('auth:api');
 
 
-Route::group(['prefix' => 'categories', 'middleware' => ['auth:api','role:boss']], function () {
+Route::group(['prefix' => 'categories', 'middlewareGroups' => ['auth:api',' role_or_permission:super-admin|categories']], function () {
     // list all categories
     Route::get('/',[CategoryController::class, 'index']);
     // paginate categories
@@ -34,7 +34,7 @@ Route::group(['prefix' => 'categories', 'middleware' => ['auth:api','role:boss']
     Route::delete('/{id}', [CategoryController::class, 'destroy']);
 });
 
-Route::group(['prefix' => 'unitmeasures', 'middleware' => ['auth:api','role:boss']], function () {
+Route::group(['prefix' => 'unitmeasures', 'middlewareGroups' => ['auth:api','role_or_permission:super-admin|unit_measures']], function () {
     // list all measures
     Route::get('/',[UnitMeasureController::class, 'index']);
     // paginate measure
@@ -49,7 +49,7 @@ Route::group(['prefix' => 'unitmeasures', 'middleware' => ['auth:api','role:boss
     Route::delete('/{id}', [UnitMeasureController::class, 'destroy']);
 });
 
-Route::group(['prefix' => 'materials', 'middleware' => ['auth:api','role:boss|seller']], function () {
+Route::group(['prefix' => 'materials', 'middlewareGroups' => ['auth:api','role_or_permission:super-admin|materials']], function () {
     // list all materials
     Route::get('/',[MaterialController::class, 'index']);
     // show material

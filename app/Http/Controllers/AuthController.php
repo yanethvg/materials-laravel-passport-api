@@ -10,6 +10,7 @@ use Illuminate\Http\Request;
 use Laravel\Passport\RefreshToken;
 use Laravel\Passport\Token;
 use App\Models\User;
+use Spatie\Permission\Models\Role;
 
 class AuthController extends Controller
 {
@@ -52,5 +53,11 @@ class AuthController extends Controller
     public function logout(Request $request) {
         $request->user()->token()->revoke();
     	return response()->json(['message' => 'Success logout']);
+    }
+
+    public function getRoles()
+    {
+        $roles = Role::all();
+        return response()->json($roles);
     }
 }
