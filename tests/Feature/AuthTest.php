@@ -163,6 +163,6 @@ class AuthTest extends TestCase
             ])->json('POST','/api/logout');
        
         $response->assertUnauthorized();
-        $response->assertJsonStructure(['message']);
+        $response->assertJsonStructure(['error']);
     }
 }

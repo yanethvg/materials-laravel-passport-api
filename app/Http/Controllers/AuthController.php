@@ -57,10 +57,4 @@ class AuthController extends Controller
         $request->user()->token()->revoke();
     	return response()->json(['message' => 'Success logout']);
     }
-
-    public function getRoles()
-    {
-        $roles = Role::all();
-        return response()->json($roles);
-    }
 }

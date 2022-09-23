@@ -73,7 +73,7 @@ class MaterialTest extends TestCase
             ])->json('get', '/api/materials', ['Accept' => 'application/json']);
 
        $response->assertUnauthorized();
-       $response->assertJsonStructure(['message']);
+       $response->assertJsonStructure(['error']);
 
     }
     public function test_store_material()

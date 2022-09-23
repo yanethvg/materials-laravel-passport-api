@@ -71,7 +71,7 @@ class UnitMeasureTest extends TestCase
              ])->json('get', '/api/unitmeasures', ['Accept' => 'application/json']);
  
         $response->assertUnauthorized();
-        $response->assertJsonStructure(['message']);
+        $response->assertJsonStructure(['error']);
  
      }
      public function test_store_unit_measure()
