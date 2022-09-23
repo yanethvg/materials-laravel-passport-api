@@ -39,14 +39,17 @@ class AuthController extends Controller
         }
 
         $user = request()->user();
-        $rol = $user->roles->pluck('name')->all();
+        $role = $user->getRoleNames()->all();
+        $permissions =$user->getPermissionAttribute()->all();
+        
 
         $accessToken = auth()->user()->createToken('authToken')->accessToken;
 
         return response([
             'user' => new AuthResource($user),
             'access_token' => $accessToken,
-            'role' => $rol[0],
+            'role' => $role[0],
+            'permissions' => $permissions,
             'token_type' => 'Bearer'
         ]);
     }

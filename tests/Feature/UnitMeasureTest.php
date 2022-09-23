@@ -67,7 +67,7 @@ class UnitMeasureTest extends TestCase
      {
  
          $response = $this->withHeaders([
-             'Authorization' => 'Bearer '. 'swdqwdqwedwehj',
+             'Authorization' => 'Bearer '. 'xxxxxxxxxxxxxxxxxx',
              ])->json('get', '/api/unitmeasures', ['Accept' => 'application/json']);
  
         $response->assertUnauthorized();
